@@ -1,0 +1,19 @@
+# Dependencias
+node_modules/
+
+# Compilación de TypeScript
+dist/
+
+# Variables de entorno
+.env
+.env.local
+
+# Logs
+*.log
+
+# IDE
+.vscode/
+.idea/
+
+# Sistema
+.DS_Store
