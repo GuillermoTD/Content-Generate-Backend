@@ -1,5 +1,8 @@
 import express, { Application, Request, Response } from 'express';
 import databaseConnect from './Database';
+
+require('dotenv').config(); //cargar variables de entorno
+
 const app: Application = express() //instancia de express
 
 const PORT = process.env.PORT || 3000; //puerto de entorno a utilizar
