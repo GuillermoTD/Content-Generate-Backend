@@ -1,5 +1,5 @@
 import express, { Application, Request, Response } from 'express';
-
+import databaseConnect from './Database';
 const app: Application = express() //instancia de express
 
 const PORT = process.env.PORT || 3000; //puerto de entorno a utilizar
@@ -10,5 +10,6 @@ app.use(express.urlencoded({ extended: true })); //para que el servidor entienda
 
 //Iniciar el servidor
 app.listen(PORT, () => {
+    databaseConnect();
     console.log(`Servidor corriendo en el puerto ${PORT}`);
 })
