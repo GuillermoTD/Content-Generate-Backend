@@ -1,15 +1,10 @@
 import express, { Application, Request, Response } from 'express';
 import databaseConnect from './Database';
+import app from './app';
 
 require('dotenv').config(); //cargar variables de entorno
 
-const app: Application = express() //instancia de express
-
 const PORT = process.env.PORT || 3000; //puerto de entorno a utilizar
-
-//Middleware
-app.use(express.json()); //para que el servidor entienda json
-app.use(express.urlencoded({ extended: true })); //para que el servidor entienda datos de formularios
 
 //Iniciar el servidor
 app.listen(PORT, () => {
