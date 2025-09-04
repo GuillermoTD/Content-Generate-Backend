@@ -14,6 +14,4 @@ app.use(express.urlencoded({ extended: true })); //Habilita la lectura de datos 
 app.use('/api', authRoutes);
 
 
-
-
 export default app;//Rutas de prueba
