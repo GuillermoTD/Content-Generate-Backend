@@ -45,10 +45,14 @@ const userSchema = new mongoose.Schema({
     default: 0, 
   },
   nextBillingDate:Date,// Next billing date for paid subscriptions
+  hashedPassword: { // Hashed password for security
+    type: String,
+    required: true,
+  },
   
 },{ timestamps: true });
 
 
-const userModel = mongoose.model('UserModel', userSchema);
+const UserModel = mongoose.model('UserModel', userSchema);
 
-export default userModel;
+export default UserModel;
