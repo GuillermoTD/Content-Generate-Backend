@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
-  username: {
+  userName: {
     type: String,
     required: true,
   },
@@ -32,6 +32,9 @@ const userSchema = new mongoose.Schema({
   trialExpires: {
     type: Date,
   },
+  trialPeriod: {
+    type: Number
+  },
   subscriptionType: { // User's subscription type
     type: String,
     enum: ["Trial", "Free", "Basic", "Premium"],
@@ -47,7 +50,6 @@ const userSchema = new mongoose.Schema({
   nextBillingDate:Date,// Next billing date for paid subscriptions
   hashedPassword: { // Hashed password for security
     type: String,
-    required: true,
   },
   
 },{ timestamps: true });
