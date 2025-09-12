@@ -2,9 +2,9 @@ import { Request, Response } from "express";
 import { Mongoose } from "mongoose";
 import UserModel from "../models/userModel";
 import bcrypt from "bcryptjs";
-import jwt, { Jwt } from "jsonwebtoken";
 import moment from "moment";
 import tokenGenerator from "../utils/tokenGenerator";
+import generateTokenCookie from "../utils/generateTokenCookie";
 
 export const login = async (req: Request, res: Response) => {
   try {
@@ -14,39 +14,51 @@ export const login = async (req: Request, res: Response) => {
     if (!email || !password) {
       return res.status(400).json({
         success: false,
-        error: "Email and password are required"
+        error: "Email and password are required",
       });
     }
 
     if (typeof email !== "string" || typeof password !== "string") {
       return res.status(400).json({
-        success: false, 
-        error: "Email and password must be strings"
+        success: false,
+        error: "Email and password must be strings",
       });
     }
 
     // Buscar usuario
     const user = await UserModel.findOne({ email }).exec();
     if (!user) {
+      console.log(user);
       return res.status(404).json({
         success: false,
-        error: "Invalid credentials" // ← No revelar si usuario existe
+        error: "This user does not exist", // ← No revelar si usuario existe
       });
     }
 
-    // ✅ CORRECTO: Comparar password PLANA con hash de la BD
+    // comparando la contraseña plana con la contraseña hasheada
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       return res.status(401).json({
         success: false,
-        error: "Invalid credentials" // ← Mismo mensaje por seguridad
+        error: "Invalid password", // ← Mismo mensaje por seguridad
       });
     }
 
     // Generar token
     const token = tokenGenerator(user._id.toString());
 
-    // Responder
+    //Generar y enviar la cookie
+    // generateTokenCookie(res, token);
+    console.log("vamos a generar cookie");
+
+    res.cookie("token", token, {
+      httpOnly: true, //don't allow js to read the cookie with javascript in the browser
+      secure: false, //this cookie will never be sent with http(not secure)
+      sameSite: "strict", //this cookie will only be sent for requests coming from the same site
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours in milliseconds
+    });
+
+    // Responder al cliente
     return res.status(200).json({
       success: true,
       data: {
@@ -54,15 +66,13 @@ export const login = async (req: Request, res: Response) => {
         email: user.email,
         username: user.userName,
         token,
-      }
+      },
     });
-
   } catch (error: any) {
     console.error("Login error:", error);
-    
     return res.status(500).json({
       success: false,
-      error: "Internal server error"
+      error: "Internal server error",
     });
   }
 };
@@ -123,8 +133,11 @@ export const signup = async (req: Request, res: Response) => {
   } catch (err) {
     console.error("Signup error:", err);
 
-    // Si ya se estableció un status code, usarlo
-    const status = res.statusCode !== 200 ? res.statusCode : 500;
-    res.json({ status });
+    if (res.statusCode !== 200) {
+      res.json({
+        message: err instanceof Error ? err.message : "Internal server error",
+        status: res.statusCode,
+      });
+    }
   }
 };
