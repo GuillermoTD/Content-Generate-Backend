@@ -5,7 +5,8 @@ import bcrypt from "bcryptjs";
 import moment from "moment";
 import tokenGenerator from "../utils/tokenGenerator";
 import generateTokenCookie from "../utils/generateTokenCookie";
-
+import asyncHandler from "express-async-handler";
+ 
 export const login = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
@@ -70,12 +71,10 @@ export const login = async (req: Request, res: Response) => {
     });
   } catch (error: any) {
     console.error("Login error:", error);
-    return res.status(500).json({
-      success: false,
-      error: "Internal server error",
-    });
+    throw new Error(error);
   }
-};
+}
+
 
 export const signup = async (req: Request, res: Response) => {
   try {
