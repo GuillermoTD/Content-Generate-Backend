@@ -4,6 +4,7 @@ import express, { Application,Response,Request } from "express";
 import authRoutes from "./routes/authRoutes";
 import morgan from 'morgan';
 import cookieParser from "cookie-parser";
+import errorHandlerMiddleware from "./middleware/errorHandlerMiddleware";
 
 const app:Application = express();
 
@@ -23,5 +24,8 @@ app.use(cookieParser());//Se habilita el el envio y lectura de cookies
 /*ROUTES*/
 app.use('/api', authRoutes); //Rutas de autenticacion
 
+
+/*Middlewares*/
+app.use(errorHandlerMiddleware);
 
 export default app;
