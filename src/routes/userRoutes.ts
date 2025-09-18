@@ -1,12 +1,10 @@
 import { Router } from "express";
-import { login, logout, signup } from "../controllers/authController";
+import { userProfile } from "../controllers/userController";
 import errorHandlerMiddleware from "../middleware/errorHandlerMiddleware";
 import isUserAuthenticatedHandler from "../middleware/isUserAuthenticatedHandler";
 
 const router:Router = Router();
 
-router.post('/login', login);
-router.post('/signup', errorHandlerMiddleware, isUserAuthenticatedHandler, signup);
-router.post('/logout', logout);
+router.post('/profile',isUserAuthenticatedHandler ,userProfile);
 
 export default router;
