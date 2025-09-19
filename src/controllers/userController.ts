@@ -1,8 +1,6 @@
-import mongoose from "mongoose";
 import { Request, Response } from "express";
 import UserModel from "../models/userModel";
 import asyncHandler from "express-async-handler";
-import { request } from "http";
 import Jwt from "jsonwebtoken";
 
 export const userProfile = asyncHandler(async (req: Request, res: Response) => {

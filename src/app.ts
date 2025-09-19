@@ -6,7 +6,7 @@ import userRoutes from "./routes/userRoutes";
 import morgan from 'morgan';
 import cookieParser from "cookie-parser";
 import errorHandlerMiddleware from "./middleware/errorHandlerMiddleware";
-
+import openAIRoutes  from "./routes/openAIRoutes";
 const app:Application = express();
 
 /*configuracion middlewares*/
@@ -27,6 +27,7 @@ app.use(cookieParser());//Se habilita el envio y lectura de cookies
 /*ROUTES*/
 app.use('/api', authRoutes); //Rutas de autenticacion
 app.use('/api', userRoutes)
+app.use('/api', openAIRoutes);
 
 
 /*Middlewares*/
