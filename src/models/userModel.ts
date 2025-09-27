@@ -33,7 +33,8 @@ const userSchema = new mongoose.Schema({
     type: Date,
   },
   trialPeriod: {
-    type: Number
+    type: Number,
+    default:3 //3 days
   },
   subscriptionType: { // User's subscription type
     type: String,
@@ -50,6 +51,10 @@ const userSchema = new mongoose.Schema({
   nextBillingDate:Date,// Next billing date for paid subscriptions
   hashedPassword: { // Hashed password for security
     type: String,
+  },
+  monthlyRequestsCount:{
+    type:Number,
+    default:100 //100 credit //3 days
   },
   
 },{ timestamps: true });
