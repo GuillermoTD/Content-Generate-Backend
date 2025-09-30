@@ -8,6 +8,7 @@ import cookieParser from "cookie-parser";
 import errorHandlerMiddleware from "./middleware/errorHandlerMiddleware";
 import openAIRoutes  from "./routes/openAIRoutes";
 import dotnet from "dotenv";
+import stripeRoute from "./routes/stripeRoute";
 
 const app:Application = express();
 
@@ -21,11 +22,13 @@ app.use(cors({ //habilitamos CORS
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-app.use(express.json()); //Permite que las solicitudes retornen json
-
-app.use(express.urlencoded({ extended: true })); //Habilita la lectura de datos de formularios
 
 app.use(morgan('combined')); //middleware para loguear peticiones
+
+
+app.use(express.json());//Permite que las solicitudes retornen json
+app.use(express.urlencoded({ extended: true }));//Habilita la lectura de datos de formularios
+app.use(cookieParser());
 
 app.use(cookieParser());//Se habilita el envio y lectura de cookies
 
@@ -35,6 +38,8 @@ dotnet.config(); //Cargar variables de entorno
 app.use('/api', authRoutes); //Rutas de autenticacion
 app.use('/api', userRoutes)
 app.use('/api', openAIRoutes);
+app.use('/api', stripeRoute);
+
 
 
 /*Middlewares*/
