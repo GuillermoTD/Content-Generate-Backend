@@ -8,9 +8,11 @@ import cookieParser from "cookie-parser";
 import errorHandlerMiddleware from "./middleware/errorHandlerMiddleware";
 import openAIRoutes  from "./routes/openAIRoutes";
 import dotnet from "dotenv";
+import stripeRoute from "./routes/stripeRoute";
 
 const app:Application = express();
 
+dotnet.config(); //Cargar variables de entorno
 /*configuracion middlewares*/
 app.use(helmet());// Seguridad basica para header http
 
@@ -29,12 +31,13 @@ app.use(morgan('combined')); //middleware para loguear peticiones
 
 app.use(cookieParser());//Se habilita el envio y lectura de cookies
 
-dotnet.config(); //Cargar variables de entorno
 
 /*ROUTES*/
 app.use('/api', authRoutes); //Rutas de autenticacion
 app.use('/api', userRoutes)
 app.use('/api', openAIRoutes);
+app.use('/api/stripe', stripeRoute);
+
 
 
 /*Middlewares*/

@@ -31,7 +31,7 @@ const isUserAuthenticatedHandler = async (
       process.env.JWT_SECRET as string
     ) as { id: string };
 
-    // 3. Buscar usuario en la base de datos
+    // 3. Guardar al usuario en la propiedad user en el request para para consultar mas adelante
     req.user = await UserModel.findById(decodedToken?.id).select("-password");
 
     if (!req.user) {
