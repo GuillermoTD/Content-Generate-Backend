@@ -12,3 +12,6 @@ const stripeRoute = router.post(
   handleStripePayment
 );
 
+
+export default stripeRoute;
+

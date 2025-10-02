@@ -25,42 +25,36 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
   console.log(email);
   // Buscar usuario
   const user = await UserModel.findOne({ email }).exec();
-  const allUser = await UserModel.find({}).exec();
-  console.log(allUser);
-  console.log("Collection name:", UserModel.collection.name);
-  // if (!user) {
-  //   throw new Error("This user does not exist");
-  // }
+  
+  if (!user) {
+    throw new Error("This user does not exist");
+  }
 
-  // // comparando la contraseña plana con la contraseña hasheada
-  // const isPasswordValid = await bcrypt.compare(password, user.password);
-  // if (!isPasswordValid) {
-  //   throw new Error("Invalid password");
-  // }
+  // comparando la contraseña plana con la contraseña hasheada
+  const isPasswordValid = await bcrypt.compare(password, user.password);
+  if (!isPasswordValid) {
+    throw new Error("Invalid password");
+  }
 
-  // // Generar token
-  // const token = tokenGenerator(user._id.toString());
+  // Generar token
+  const token = tokenGenerator(user._id.toString());
 
-  // //Generar y enviar la cookie
-  // // generateTokenCookie(res, token);
-  // console.log("vamos a generar cookie");
+  //Generar y enviar la cookie
+  // generateTokenCookie(res, token);
+  console.log("vamos a generar cookie");
 
-  // res.cookie("token", token, {
-  //   httpOnly: true, //don't allow js to read the cookie with javascript in the browser
-  //   secure: false, //this cookie will never be sent with http(not secure)
-  //   sameSite: "strict", //this cookie will only be sent for requests coming from the same site
-  //   maxAge: 24 * 60 * 60 * 1000, // 24 hours in milliseconds
-  // });
+  res.cookie("token", token, {
+    httpOnly: true, //don't allow js to read the cookie with javascript in the browser
+    secure: false, //this cookie will never be sent with http(not secure)
+    sameSite: "strict", //this cookie will only be sent for requests coming from the same site
+    maxAge: 24 * 60 * 60 * 1000, // 24 hours in milliseconds
+  });
 
-  // // Responder al cliente
-  // res.status(200).json({
-  //   success: true,
-  //   data: {
-  //     id: user._id,
-  //     email: user.email,
-  //     username: user.userName,
-  //   },
-  // });
+  // Responder al cliente
+  res.status(200).json({
+    success: true,
+    user
+  });
 });
 
 export const signup = asyncHandler(async (req: Request, res: Response) => {

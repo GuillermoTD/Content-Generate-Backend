@@ -2,8 +2,9 @@ import asyncHandler from "express-async-handler";
 import { Response, Request } from "express";
 import Stripe from "stripe";
 import paymentModel from "../models/Payments";
+import calculateNextBillingDate from "../utils/calculateNextBillingDate";
 
-const stripePaymentController = asyncHandler(
+export const stripePaymentController = asyncHandler(
   async (req: Request, res: Response) => {
     const { amount, suscriptionPlan } = req.body;
     const token = req.cookies.token;
@@ -48,4 +49,16 @@ const stripePaymentController = asyncHandler(
   }
 );
 
-export default stripePaymentController;
+
+export const handleFreeSubscription = asyncHandler(async(req:Request,res:Response)=>{
+  //Get the logued user
+  const user = req?.user;
+  //Calculate the next billing date
+  const nextBillingCalculated = calculateNextBillingDate()
+  //Check if user account should be renew or not
+  
+  //Create new payment and save into DB
+  //Update the user account
+  //Send the response
+})
+

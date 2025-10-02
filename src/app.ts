@@ -12,6 +12,10 @@ import stripeRoute from "./routes/stripeRoute";
 
 const app:Application = express();
 
+app.use(express.json());//Permite que las solicitudes retornen json
+app.use(express.urlencoded({ extended: true }));//Habilita la lectura de datos de formularios
+app.use(cookieParser());
+
 dotnet.config(); //Cargar variables de entorno
 /*configuracion middlewares*/
 app.use(helmet());// Seguridad basica para header http
@@ -27,9 +31,7 @@ app.use(cors({ //habilitamos CORS
 app.use(morgan('combined')); //middleware para loguear peticiones
 
 
-app.use(express.json());//Permite que las solicitudes retornen json
-app.use(express.urlencoded({ extended: true }));//Habilita la lectura de datos de formularios
-app.use(cookieParser());
+
 
 app.use(cookieParser());//Se habilita el envio y lectura de cookies
 
